@@ -1,0 +1,45 @@
+<html>
+<head>
+<meta charset="UTF-8"> <!-- tell the browser that editor.js contains unicode -->
+<script src="webppl.js"></script> <!-- compiled webppl library; get this from https://github.com/probmods/webppl -->
+<script src="webppl-editor.js">
+</script>
+<script src="coverage.js">
+</script>
+<link rel="stylesheet" href="webppl-editor.css">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+	<div>
+		<p>Inputs to programs generally follow a known distribution. For instance, a health program can expect height to be distributed around the mean height. This "probabalistic code coverage" tool lets us test the program on its most common inputs and determine which lines of code are run the most.</p>
+	</div>
+<div id="selectFn">
+	<p>Input the name of the function to analyze. The program will be analyzed with respect to variation in the parameters of this function.</p>
+	<label for="targetFn">Function to analyze:</label><br>
+	<input id="targetFn" type="text" name="targetFn" value="divisibility">
+</div>
+<div id="selectParams">
+	<p>To set the distribution of each parameter, add an entry of the format <code>paramName=paramDistribution</code>. For functions with multiple parameters, separate each entry onto a new line. The <code>paramName</code>s can be arbitrary but should be distinct among the parameters.</p>
+	<p>Possible values of <code>paramDistribution</code> are <code>c, flip(p), geometric(p), binomial(n, p)</code> for constant <code>c</code>, probability <code>0 < p < 1</code>, and positive integer <code>n</code>.</p>
+	<label for="targetParams">Distribution of parameters:</label><br>
+	<textarea id="targetParams" name="targetParams">x=geometric(0.5)
+y=binomial(10, 0.2)</textarea>
+	</div>
+
+	<p>This tool is meant for functional Javascript programs. As a result, general assignment expressions (<code>var x = 2; ...; x = 5;</code>) and looping constructs (<code>for, while, do</code>) are not supported. Functions should be written as <code>var f = function(x, y) { ... }</code>. Recursion is not supported at this time.</p>
+	<p>Paste the program into the text editor below. Click the line numbers to select which lines to analyze coverage for. Then, click "run" to do the analysis.</p>
+<pre></pre>
+<p>The result printed is an array of <code>{ "line": ..., "prob": ... }</code> elements for each of the lines selected.</p>
+<p>The probability <code>"prob"</code> assigned to each line represents the fraction of program executions distributed over all possible parameters that reached <code>"line"</code>. For example, the first line of the function analyzed would always have a probability of 1, since it's always executed regardless of (syntactically valid) input.</p>
+</body>
+<script>
+// find all <pre> elements and set up the editor on them
+var preEls = Array.prototype.slice.call(document.querySelectorAll("pre"));
+preEls.map(function(el) { 
+	editor.setup(el, {language: 'webppl'});
+});
+
+
+
+</script>
+</html>
