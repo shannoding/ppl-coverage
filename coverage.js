@@ -64,7 +64,6 @@ function makeWrapperStr() {
 }
 
 function handleRun(code) {
-	// updateBreakpoints();
 	breakpoints.sort(function(a, b) {
   		return a - b;
 	});
@@ -96,6 +95,9 @@ function flaggedI(nexp, i) {
 
 function handleReturn(returnValue) {
 	let n = breakpoints.length;
+	if (n == 0) {
+		return "No lines selected! Click the line numbers to select lines to analyze coverage for.";
+	}
 	let nexp = Math.pow(2, n);
 
 	let result = [];
